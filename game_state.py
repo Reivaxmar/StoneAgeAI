@@ -6,7 +6,7 @@ and resource management for the Stone Age board game simulation.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import List, Dict, Optional
 from enum import Enum
 import random
 
@@ -269,13 +269,13 @@ class Board:
         for space in self.action_spaces:
             self.placed_workers[space] = []
     
-    def get_available_civilization_card(self) -> CivilizationCard:
+    def get_available_civilization_card(self) -> Optional[CivilizationCard]:
         """Get and remove a civilization card from the deck"""
         if self.civilization_cards:
             return self.civilization_cards.pop(0)
         return None
     
-    def get_available_building(self, index: int) -> Building:
+    def get_available_building(self, index: int) -> Optional[Building]:
         """Get and remove a building from available tiles"""
         if 0 <= index < len(self.buildings):
             return self.buildings.pop(index)

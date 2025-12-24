@@ -4,7 +4,6 @@ Stone Age Game Engine Module
 This module implements the main game loop and orchestrates the game flow.
 """
 
-from typing import List
 from game_state import GameState, ActionSpace
 from ai_player import AIPlayer
 
