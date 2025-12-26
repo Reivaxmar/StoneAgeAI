@@ -5,8 +5,18 @@ This module provides ASCII-based visualization of the Stone Age game board,
 including the scoring track, action spaces, and game components.
 """
 
-from game_state import GameState, ActionSpace, Player
+from game_state import GameState, ActionSpace, Player, ResourceType
 from typing import List
+
+
+# Resource type abbreviations for display
+RESOURCE_ABBREV = {
+    ResourceType.WOOD: "W",
+    ResourceType.BRICK: "B",
+    ResourceType.STONE: "S",
+    ResourceType.GOLD: "G",
+    ResourceType.FOOD: "F",
+}
 
 
 class BoardVisualizer:
@@ -40,10 +50,6 @@ class BoardVisualizer:
         points_top = "".join([f"{i:2d} " if i % 5 == 0 else " . " for i in range(25)])
         print("┌" + "─" * (self.board_width - 2) + "┐")
         print(f"│ Points: {points_top.ljust(self.board_width - 12)}│")
-        
-        # Display left edge (points 25-49)
-        left_points = list(range(25, 50))
-        return left_points
     
     def _display_board_interior(self):
         """Display the interior of the board with action spaces and game components"""
@@ -123,7 +129,7 @@ class BoardVisualizer:
         for i in range(4):
             if i < len(buildings):
                 building = buildings[i]
-                cost_str = ", ".join([f"{amt}{res.value[0]}" for res, amt in building.cost.items()])
+                cost_str = ", ".join([f"{amt}{RESOURCE_ABBREV[res]}" for res, amt in building.cost.items()])
                 text = f"  🏛️  {i+1}. {building.name:15s} Cost:[{cost_str:12s}] ({building.points:2d} pts)"
             else:
                 text = f"     {i+1}. [No building available]"
@@ -138,8 +144,8 @@ class BoardVisualizer:
             right_point = right_start + i
             
             line = f"│{left_point:2d}│ {text}"
-            # Pad to width
-            padding = self.board_width - 4 - len(line) - 4
+            # Pad to width (ensure non-negative padding)
+            padding = max(0, self.board_width - 8 - len(line))
             line += " " * padding + f" │{right_point:2d}│"
             print(line)
         
@@ -149,7 +155,7 @@ class BoardVisualizer:
             left_point = left_start + current_line
             right_point = right_start + current_line
             line = f"│{left_point:2d}│"
-            padding = self.board_width - 4 - len(line) - 4
+            padding = max(0, self.board_width - 8 - len(line))
             line += " " * padding + f" │{right_point:2d}│"
             print(line)
             current_line += 1
