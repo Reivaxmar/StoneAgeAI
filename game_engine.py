@@ -6,7 +6,6 @@ This module implements the main game loop and orchestrates the game flow.
 
 from game_state import GameState, ActionSpace
 from ai_player import AIPlayer
-from board_visualization import display_round_start, display_game_board
 
 
 class GameEngine:
@@ -17,6 +16,7 @@ class GameEngine:
         self.ai_players = [AIPlayer(i) for i in range(num_players)]
         self.game_log = []
         self.enable_visualization = enable_visualization
+        self.web_visualizer = None
     
     def log(self, message: str):
         """Add a message to the game log"""
@@ -31,6 +31,11 @@ class GameEngine:
         self.log(f"Starting game with {len(self.game_state.players)} players")
         self.log("")
         
+        # Start web visualization if enabled
+        if self.enable_visualization:
+            from web_visualization import start_web_visualization
+            self.web_visualizer = start_web_visualization(self.game_state)
+        
         # Main game loop
         while not self.game_state.is_game_over():
             self.game_state.current_round += 1
@@ -42,6 +47,17 @@ class GameEngine:
         self.log("GAME OVER")
         self.log("=" * 80)
         self.display_final_scores()
+        
+        # Keep web server running if visualization is enabled
+        if self.enable_visualization and self.web_visualizer:
+            self.log("\nWeb visualization is still running. Press Ctrl+C to exit.")
+            try:
+                import time
+                while True:
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                self.log("\nShutting down...")
+                self.web_visualizer.stop_server()
     
     def run_round(self):
         """Run a single round of the game"""
@@ -50,9 +66,9 @@ class GameEngine:
         self.log(f"ROUND {self.game_state.current_round}")
         self.log("=" * 80)
         
-        # Display visual board if enabled
-        if self.enable_visualization:
-            display_round_start(self.game_state, self.game_state.current_round)
+        # Update web visualization if enabled
+        if self.enable_visualization and self.web_visualizer:
+            self.web_visualizer.display_round(self.game_state.current_round)
         
         # Phase 1: Place workers
         self.log("")

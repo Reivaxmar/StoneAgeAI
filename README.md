@@ -15,14 +15,15 @@ This project simulates a complete game of Stone Age with AI players that make de
   1. Worker placement phase
   2. Action resolution phase
   3. Feeding phase
-- **Board Visualization**: ASCII-based visual representation of the game board showing:
-  - 100-point scoring track (0-99) around the board perimeter
-  - All resource gathering zones (Hunting Grounds, Forest, Clay Pit, Quarry, River)
-  - Special action zones (Farm, Tool Maker, Hut)
-  - Available civilization cards (4 displayed)
-  - Available buildings (4 displayed)
-  - Worker placement status for each zone
-  - Player status with resources, tools, and food production
+- **Board Visualization**: Web-based interactive visualization showing:
+  - 100-point scoring track (0-99) displayed prominently
+  - All resource gathering zones (Hunting Grounds, Forest, Clay Pit, Quarry, River) with real-time worker counts
+  - Special action zones (Farm, Tool Maker, Hut) with worker placement status
+  - Available civilization cards (4 displayed) with point values
+  - Available buildings (4 displayed) with resource costs and points
+  - Player status cards showing resources, tools, food production, and owned items
+  - Auto-refreshing display that updates every 3 seconds
+  - Responsive design with modern UI
 - **Detailed Logging**: Full game progression logs showing each decision and outcome
 - **Final Scoring**: Calculates final scores including civilization cards, buildings, and resource bonuses
 
@@ -41,13 +42,19 @@ To run a simulation:
 python3 main.py
 ```
 
-To run with visual board display:
+To run with web-based visualization:
 
 ```bash
 python3 main.py --visualize
 # or
 python3 main.py -v
 ```
+
+This will:
+1. Start a local web server (default port 8080)
+2. Automatically open your browser to view the game board
+3. Update the visualization in real-time as the game progresses
+4. Keep the server running after the game ends (press Ctrl+C to stop)
 
 Or:
 
@@ -62,8 +69,11 @@ StoneAgeAI/
 ├── game_state.py           # Core game state classes (Board, Player, Resources)
 ├── ai_player.py            # AI player with heuristic evaluation
 ├── game_engine.py          # Main game loop and orchestration
-├── board_visualization.py  # ASCII-based board visualization
+├── web_visualization.py    # Web-based board visualization
 ├── main.py                 # Entry point
+├── web/                    # Web visualization files (auto-generated)
+│   ├── index.html          # Web interface
+│   └── game_state.json     # Current game state
 └── README.md               # This file
 ```
 
