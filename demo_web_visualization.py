@@ -108,9 +108,10 @@ p2.tools = [1, 3]
 p2.score = 38
 p2.workers = 7
 
-# Add a building to Player 2
-building = Building("Field", {ResourceType.WOOD: 2, ResourceType.BRICK: 2}, 8)
-p2.buildings.append(building)
+# Add a building to Player 2 (use existing building from board)
+if engine.game_state.board.buildings:
+    building = engine.game_state.board.buildings[0]
+    p2.buildings.append(building)
 
 engine.web_visualizer.save_state_to_file()
 

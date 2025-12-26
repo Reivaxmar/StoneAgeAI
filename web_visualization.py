@@ -541,7 +541,10 @@ class WebVisualizer:
                 const li = document.createElement('li');
                 li.className = 'building-item';
                 const costStr = Object.entries(building.cost)
-                    .map(([res, amt]) => `<span class="cost-badge">${amt}${res[0]}</span>`)
+                    .map(([res, amt]) => {
+                        const abbrev = {'Wood': 'W', 'Brick': 'B', 'Stone': 'S', 'Gold': 'G', 'Food': 'F'}[res] || res[0];
+                        return `<span class="cost-badge">${amt}${abbrev}</span>`;
+                    })
                     .join('');
                 li.innerHTML = `
                     <div>
@@ -691,11 +694,21 @@ class WebVisualizer:
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, directory=str(web_dir), **kwargs)
             
+            def translate_path(self, path):
+                """Restrict access to web directory only"""
+                path = super().translate_path(path)
+                # Ensure path is within web_dir
+                real_path = Path(path).resolve()
+                real_web_dir = Path(web_dir).resolve()
+                if not str(real_path).startswith(str(real_web_dir)):
+                    return str(real_web_dir / 'index.html')
+                return path
+            
             def log_message(self, format, *args):
                 # Suppress server logs
                 pass
         
-        self.server = socketserver.TCPServer(("", self.port), MyHTTPRequestHandler)
+        self.server = socketserver.TCPServer(("127.0.0.1", self.port), MyHTTPRequestHandler)
         self.server_thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.server_thread.start()
         
