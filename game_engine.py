@@ -6,15 +6,17 @@ This module implements the main game loop and orchestrates the game flow.
 
 from game_state import GameState, ActionSpace
 from ai_player import AIPlayer
+from board_visualization import display_round_start, display_game_board
 
 
 class GameEngine:
     """Main game engine that runs the Stone Age game"""
     
-    def __init__(self, num_players: int = 2):
+    def __init__(self, num_players: int = 2, enable_visualization: bool = False):
         self.game_state = GameState(num_players)
         self.ai_players = [AIPlayer(i) for i in range(num_players)]
         self.game_log = []
+        self.enable_visualization = enable_visualization
     
     def log(self, message: str):
         """Add a message to the game log"""
@@ -47,6 +49,10 @@ class GameEngine:
         self.log("=" * 80)
         self.log(f"ROUND {self.game_state.current_round}")
         self.log("=" * 80)
+        
+        # Display visual board if enabled
+        if self.enable_visualization:
+            display_round_start(self.game_state, self.game_state.current_round)
         
         # Phase 1: Place workers
         self.log("")
@@ -227,12 +233,16 @@ class GameEngine:
 def main():
     """Main entry point for the Stone Age simulation"""
     import random
+    import sys
     
     # Set random seed for reproducibility (optional)
     # random.seed(42)
     
+    # Check if visualization is enabled via command line argument
+    enable_viz = '--visualize' in sys.argv or '-v' in sys.argv
+    
     # Create and run game
-    engine = GameEngine(num_players=2)
+    engine = GameEngine(num_players=2, enable_visualization=enable_viz)
     engine.run_game()
     
     # Get summary

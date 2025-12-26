@@ -15,6 +15,14 @@ This project simulates a complete game of Stone Age with AI players that make de
   1. Worker placement phase
   2. Action resolution phase
   3. Feeding phase
+- **Board Visualization**: ASCII-based visual representation of the game board showing:
+  - 100-point scoring track (0-99) around the board perimeter
+  - All resource gathering zones (Hunting Grounds, Forest, Clay Pit, Quarry, River)
+  - Special action zones (Farm, Tool Maker, Hut)
+  - Available civilization cards (4 displayed)
+  - Available buildings (4 displayed)
+  - Worker placement status for each zone
+  - Player status with resources, tools, and food production
 - **Detailed Logging**: Full game progression logs showing each decision and outcome
 - **Final Scoring**: Calculates final scores including civilization cards, buildings, and resource bonuses
 
@@ -33,6 +41,14 @@ To run a simulation:
 python3 main.py
 ```
 
+To run with visual board display:
+
+```bash
+python3 main.py --visualize
+# or
+python3 main.py -v
+```
+
 Or:
 
 ```bash
@@ -43,11 +59,12 @@ python3 game_engine.py
 
 ```
 StoneAgeAI/
-├── game_state.py      # Core game state classes (Board, Player, Resources)
-├── ai_player.py       # AI player with heuristic evaluation
-├── game_engine.py     # Main game loop and orchestration
-├── main.py            # Entry point
-└── README.md          # This file
+├── game_state.py           # Core game state classes (Board, Player, Resources)
+├── ai_player.py            # AI player with heuristic evaluation
+├── game_engine.py          # Main game loop and orchestration
+├── board_visualization.py  # ASCII-based board visualization
+├── main.py                 # Entry point
+└── README.md               # This file
 ```
 
 ## Game Components
