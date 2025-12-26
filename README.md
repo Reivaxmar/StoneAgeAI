@@ -24,6 +24,7 @@ This project simulates a complete game of Stone Age with AI players that make de
   - Player status cards showing resources, tools, food production, and owned items
   - Auto-refreshing display that updates every 3 seconds
   - Responsive design with modern UI
+  - See [screenshots](screenshots/) for examples
 - **Detailed Logging**: Full game progression logs showing each decision and outcome
 - **Final Scoring**: Calculates final scores including civilization cards, buildings, and resource bonuses
 
@@ -33,6 +34,19 @@ No external dependencies required! This project uses only Python standard librar
 
 Requirements:
 - Python 3.7 or higher
+
+## Web Visualization
+
+The web interface provides a modern, interactive view of the game board:
+
+![Stone Age Web Interface](https://github.com/user-attachments/assets/b44ce85e-c785-4cc3-b3f4-4b8fb7839307)
+
+Features:
+- Real-time updates every 3 seconds
+- Interactive card-based layout with hover effects
+- Scoring track, resource zones, and action spaces
+- Player status with resources and owned items
+- See [screenshots/](screenshots/) for more details
 
 ## Usage
 
