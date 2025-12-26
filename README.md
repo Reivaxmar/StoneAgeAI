@@ -15,6 +15,16 @@ This project simulates a complete game of Stone Age with AI players that make de
   1. Worker placement phase
   2. Action resolution phase
   3. Feeding phase
+- **Board Visualization**: Web-based interactive visualization showing:
+  - 100-point scoring track (0-99) displayed prominently
+  - All resource gathering zones (Hunting Grounds, Forest, Clay Pit, Quarry, River) with real-time worker counts
+  - Special action zones (Farm, Tool Maker, Hut) with worker placement status
+  - Available civilization cards (4 displayed) with point values
+  - Available buildings (4 displayed) with resource costs and points
+  - Player status cards showing resources, tools, food production, and owned items
+  - Auto-refreshing display that updates every 3 seconds
+  - Responsive design with modern UI
+  - See [screenshots](screenshots/) for examples
 - **Detailed Logging**: Full game progression logs showing each decision and outcome
 - **Final Scoring**: Calculates final scores including civilization cards, buildings, and resource bonuses
 
@@ -25,6 +35,19 @@ No external dependencies required! This project uses only Python standard librar
 Requirements:
 - Python 3.7 or higher
 
+## Web Visualization
+
+The web interface provides a modern, interactive view of the game board:
+
+![Stone Age Web Interface](https://github.com/user-attachments/assets/b44ce85e-c785-4cc3-b3f4-4b8fb7839307)
+
+Features:
+- Real-time updates every 3 seconds
+- Interactive card-based layout with hover effects
+- Scoring track, resource zones, and action spaces
+- Player status with resources and owned items
+- See [screenshots/](screenshots/) for more details
+
 ## Usage
 
 To run a simulation:
@@ -32,6 +55,20 @@ To run a simulation:
 ```bash
 python3 main.py
 ```
+
+To run with web-based visualization:
+
+```bash
+python3 main.py --visualize
+# or
+python3 main.py -v
+```
+
+This will:
+1. Start a local web server (default port 8080)
+2. Automatically open your browser to view the game board
+3. Update the visualization in real-time as the game progresses
+4. Keep the server running after the game ends (press Ctrl+C to stop)
 
 Or:
 
@@ -43,11 +80,15 @@ python3 game_engine.py
 
 ```
 StoneAgeAI/
-├── game_state.py      # Core game state classes (Board, Player, Resources)
-├── ai_player.py       # AI player with heuristic evaluation
-├── game_engine.py     # Main game loop and orchestration
-├── main.py            # Entry point
-└── README.md          # This file
+├── game_state.py           # Core game state classes (Board, Player, Resources)
+├── ai_player.py            # AI player with heuristic evaluation
+├── game_engine.py          # Main game loop and orchestration
+├── web_visualization.py    # Web-based board visualization
+├── main.py                 # Entry point
+├── web/                    # Web visualization files (auto-generated)
+│   ├── index.html          # Web interface
+│   └── game_state.json     # Current game state
+└── README.md               # This file
 ```
 
 ## Game Components

@@ -11,10 +11,12 @@ from ai_player import AIPlayer
 class GameEngine:
     """Main game engine that runs the Stone Age game"""
     
-    def __init__(self, num_players: int = 2):
+    def __init__(self, num_players: int = 2, enable_visualization: bool = False):
         self.game_state = GameState(num_players)
         self.ai_players = [AIPlayer(i) for i in range(num_players)]
         self.game_log = []
+        self.enable_visualization = enable_visualization
+        self.web_visualizer = None
     
     def log(self, message: str):
         """Add a message to the game log"""
@@ -29,6 +31,11 @@ class GameEngine:
         self.log(f"Starting game with {len(self.game_state.players)} players")
         self.log("")
         
+        # Start web visualization if enabled
+        if self.enable_visualization:
+            from web_visualization import start_web_visualization
+            self.web_visualizer = start_web_visualization(self.game_state)
+        
         # Main game loop
         while not self.game_state.is_game_over():
             self.game_state.current_round += 1
@@ -40,6 +47,17 @@ class GameEngine:
         self.log("GAME OVER")
         self.log("=" * 80)
         self.display_final_scores()
+        
+        # Keep web server running if visualization is enabled
+        if self.enable_visualization and self.web_visualizer:
+            self.log("\nWeb visualization is still running. Press Ctrl+C to exit.")
+            try:
+                import time
+                while True:
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                self.log("\nShutting down...")
+                self.web_visualizer.stop_server()
     
     def run_round(self):
         """Run a single round of the game"""
@@ -47,6 +65,10 @@ class GameEngine:
         self.log("=" * 80)
         self.log(f"ROUND {self.game_state.current_round}")
         self.log("=" * 80)
+        
+        # Update web visualization if enabled
+        if self.enable_visualization and self.web_visualizer:
+            self.web_visualizer.display_round(self.game_state.current_round)
         
         # Phase 1: Place workers
         self.log("")
@@ -227,12 +249,16 @@ class GameEngine:
 def main():
     """Main entry point for the Stone Age simulation"""
     import random
+    import sys
     
     # Set random seed for reproducibility (optional)
     # random.seed(42)
     
+    # Check if visualization is enabled via command line argument
+    enable_viz = '--visualize' in sys.argv or '-v' in sys.argv
+    
     # Create and run game
-    engine = GameEngine(num_players=2)
+    engine = GameEngine(num_players=2, enable_visualization=enable_viz)
     engine.run_game()
     
     # Get summary

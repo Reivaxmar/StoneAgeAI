@@ -36,3 +36,9 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Output files
+visualization_output.txt
+
+# Web visualization files (auto-generated)
+web/
